@@ -6,7 +6,7 @@ export function Generator() {
     const [isLoading, setIsLoading] = useState(false)
     const [error, setError] = useState(null)
     const [difficulty, setDifficulty] = useState('easy')
-    const [quota, setQuota] = useState({ quota_remaining: 3 })
+    const [quota, setQuota] = useState({ quota_remaining: 0})
 
     const generateChallenge = async () => {}
 
@@ -33,12 +33,12 @@ export function Generator() {
                     </p>
                 </div>
 
-                {isQuotaEmpty && (
+                {/* {isQuotaEmpty && (
                     <p className="text-sm text-red-500 text-right">
                         Quota exhausted <br />
                         Reset: {getNextResetTime()}
                     </p>
-                )}
+                )} */}
             </div>
 
             <div className="flex items-center gap-4">
