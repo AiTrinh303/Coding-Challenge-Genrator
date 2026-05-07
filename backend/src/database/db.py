@@ -1,0 +1,61 @@
+from sqlalchemy.orm import Session
+from datetime import datetime, timedelta
+from src.database import models
+
+
+def get_challenge_quota(db: Session, user_id: str):
+    query = db.query(models.ChallengeQuota)
+    query = query.filter(models.ChallengeQuota.user_id == user_id)
+    challenge_quota = query.first()
+    return challenge_quota
+
+
+def create_challenge_quota(db: Session, user_id: str):
+    db_quota = models.ChallengeQuota(user_id=user_id)
+    db.add(db_quota)
+    db.commit()
+    db.refresh(db_quota)
+    return db_quota
+
+
+def reset_quota_if_needed(db: Session, quota: models.ChallengeQuota):
+    now = datetime.now()
+    time_passed = now - quota.last_reset_date
+    if time_passed > timedelta(hours=24):
+        quota.quota_remaining = 10
+        quota.last_reset_date = now
+        db.commit()
+        db.refresh(quota)
+    return quota
+
+
+def create_challenge(
+    db: Session,
+    difficulty: str,
+    created_by: str,
+    title: str,
+    options: str,
+    correct_answer_id: int,
+    explanation: str
+):
+    db_challenge = models.Challenge(
+        difficulty=difficulty,
+        created_by=created_by,
+        title=title,
+        options=options,
+        correct_answer_id=correct_answer_id,
+        explanation=explanation
+    )
+    db.add(db_challenge)
+    db.commit()
+    db.refresh(db_challenge)
+    return db_challenge
+
+
+def get_user_challenges(db: Session, user_id: str):
+    query = db.query(models.Challenge)
+    query = query.filter(
+        models.Challenge.created_by == user_id
+    )
+    user_challenges = query.all()
+    return user_challenges
