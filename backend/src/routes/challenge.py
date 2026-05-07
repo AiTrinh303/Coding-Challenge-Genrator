@@ -2,17 +2,29 @@ from fastapi import APIRouter, Depends, HTTPException, Request
 from pydantic import BaseModel
 from sqlalchemy.orm import Session
 
+from ..ai_generator import generate_challenge_with_ai
 from ..database.db import (
     get_challenge_quota,
+    create_challenge,
+    create_challenge_quota,
     reset_quota_if_needed,
     get_user_challenges,
     get_db
 )
 from ..utils import authenticate_get_user_details
 from ..database.model import get_db
+import json
 from datetime import datetime
 
 router = APIRouter()
+
+
+class ChallengeRequest(BaseModel):
+    difficulty: str
+
+    class Config:
+        json_schema_extra = {"example": {"difficulty": "difficult"}}
+
 
 @router.get("/my-history")
 async def my_history(request: Request, db: Session = Depends(get_db)):
@@ -39,3 +51,30 @@ async def get_quota(request: Request, db: Session = Depends(get_db)):
     quota = reset_quota_if_needed(db, quota)
     return quota
 
+
+@router.post("/generate-challenge")
+async def generate_challenge(request: ChallengeRequest, db: Session = Depends(get_db)):
+    try:
+        user_details = authenticate_get_user_details(request)
+        user_id = user_details.get("user_id")
+
+        quota = get_challenge_quota(db, user_id)
+        if not quota:
+            quota = create_challenge_quota(db, user_id)
+
+        quota = reset_quota_if_needed(db, quota)
+
+        if quota.quota_remaining <= 0:
+            raise HTTPException(status_code=429, detail="Quota exhausted")
+
+        challenge_data = None
+
+        #TODO: generate challenge
+
+        quota.quota_remaining -= 1
+        db.commit()
+
+        return challenge_data
+
+    except Exception as e:
+        pass
