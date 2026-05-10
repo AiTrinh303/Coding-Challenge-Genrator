@@ -92,4 +92,4 @@ async def generate_challenge(request: ChallengeRequest, db: Session = Depends(ge
         }
 
     except Exception as e:
-        pass
+        raise HTTPException(status_code=400, detail=str(e))
