@@ -4,6 +4,10 @@ from .routes import challenge
 
 app = FastAPI()
 
+@app.get("/")
+def home():
+    return {"message": "Backend is running"}
+
 app.add_middleware(
     CORSMiddleware,
     allow_origins=["*"],
