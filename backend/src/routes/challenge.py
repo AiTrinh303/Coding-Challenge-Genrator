@@ -8,9 +8,8 @@ from ..database.db import (
     create_challenge,
     create_challenge_quota,
     reset_quota_if_needed,
-    get_user_challenges,
-    get_db
-)
+    get_user_challenges
+    )
 from ..utils import authenticate_get_user_details
 from ..database.model import get_db
 import json
