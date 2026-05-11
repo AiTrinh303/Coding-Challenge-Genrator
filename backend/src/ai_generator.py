@@ -3,13 +3,16 @@ import json
 from openai import OpenAI
 from typing import Dict, Any
 from dotenv import load_dotenv
+from pathlib import Path
 
 load_dotenv()
 
 client = OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
 
-with open("prompts/challenge_system_prompt.txt", "r", encoding="utf-8") as f:
-    system_prompt = f.read()
+BASE_DIR = Path(__file__).resolve().parent
+PROMPT_PATH = BASE_DIR / "prompts" / "challenge_system_prompt.txt"
+
+system_prompt = PROMPT_PATH.read_text(encoding="utf-8")
 
 def generate_challenge_with_ai(difficulty: str) -> Dict[str, Any]:
     try:
