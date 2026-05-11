@@ -85,14 +85,14 @@ export function Generator() {
     <div className="bg-white border border-gray-200 rounded-2xl p-5 shadow-sm flex items-center gap-4">
 
         <label htmlFor="difficulty" className="text-sm font-medium text-gray-700">
-            Level
+            Select Level: 
         </label>
 
         <select
             id="difficulty"
             value={difficulty}
             onChange={(e) => setDifficulty(e.target.value)}
-            disabled={isLoading || isQuotaEmpty}
+            disabled={isLoading}
             className="border border-gray-300 rounded-xl px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 disabled:opacity-50"
         >
             <option value="easy">Easy</option>
@@ -102,7 +102,7 @@ export function Generator() {
 
         <button
             onClick={generateChallenge}
-            disabled={isLoading || isQuotaEmpty}
+            disabled={isLoading}
             className="ml-auto bg-blue-600 hover:bg-blue-700 text-white text-sm font-semibold px-5 py-2 rounded-xl transition shadow-sm disabled:opacity-50 disabled:cursor-not-allowed"
         >
             {isLoading ? 'Generating...' : 'Generate'}
