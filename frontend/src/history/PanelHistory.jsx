@@ -1,7 +1,9 @@
 import React, {useState, useEffect} from 'react'
 import { MultipleChoiceQuestion } from '../challenge/MultibleChoiceQuestion'
+import {useApi} from '../utils/app.js'
 
 export function PanelHistory() {
+    const {makeRequest} = useApi()
     const [history, setHistory] = useState([])
     const [loading, setLoading] = useState(true)
     const [error, setError] = useState(null)
@@ -11,7 +13,18 @@ export function PanelHistory() {
     }, [])
 
     const fetchHistory = async () => {
-        setLoading(false)
+        setIsLoading(true)
+        setError(null)
+
+        try {
+            const data = await makeRequest("my-history")
+            // console.log(data)
+            setHistory(data.challenges)
+        } catch (err) {
+            setError("Failed to load history.")
+        } finally {
+            setIsLoading(false)
+        }
     }
 
      if (loading) {
