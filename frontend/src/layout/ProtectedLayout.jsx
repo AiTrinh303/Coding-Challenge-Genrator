@@ -6,7 +6,7 @@ import {
     UserButton
 } from '@clerk/clerk-react'
 
-import { Outlet, Link, NavLink } from 'react-router-dom'
+import { Outlet, NavLink } from 'react-router-dom'
 
 export function ProtectedLayout() {
     const linkClass = ({ isActive }) =>

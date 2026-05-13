@@ -10,10 +10,6 @@ export function Generator() {
     const [quota, setQuota] = useState({ quota_remaining: 0})
     const {makeRequest} = useApi()
 
-    useEffect(() => {
-        fetchQuota()
-    }, [])
-
     const fetchQuota = async () => {
         try {
             const data = await makeRequest("quota")
@@ -22,6 +18,10 @@ export function Generator() {
             console.log(err)
         }
     }
+
+    useEffect(() => {
+        fetchQuota()
+    }, [])
 
     const generateChallenge = async () => {
         setIsLoading(true)

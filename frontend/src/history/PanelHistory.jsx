@@ -8,10 +8,6 @@ export function PanelHistory() {
     const [loading, setLoading] = useState(true)
     const [error, setError] = useState(null)
 
-    useEffect(() => {
-        fetchHistory()
-    }, [])
-
     const fetchHistory = async () => {
         setLoading(true)
         setError(null)
@@ -27,7 +23,11 @@ export function PanelHistory() {
         }
     }
 
-     if (loading) {
+    useEffect(() => {
+        fetchHistory()
+    }, [])
+
+    if (loading) {
         return (
             <div className="flex items-center justify-center py-10 text-gray-500">
                 Loading history...
