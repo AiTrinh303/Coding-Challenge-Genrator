@@ -2,8 +2,12 @@ from sqlalchemy import Column, Integer, String, DateTime, create_engine
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker
 from datetime import datetime
+from pathlib import Path
 
-engine = create_engine('sqlite:///database.db', echo=True)
+BASE_DIR = Path(__file__).resolve().parents[2]
+DATABASE_PATH = BASE_DIR / "database.db"
+
+engine = create_engine(f"sqlite:///{DATABASE_PATH}", echo=True)
 Base = declarative_base()
 
 
