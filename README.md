@@ -1,6 +1,5 @@
 # 🚀 AI Challenge Generator
 
-![License](https://img.shields.io/badge/License-MIT-lightgrey)
 ![Backend](https://img.shields.io/badge/FastAPI-Backend-009688?logo=fastapi)
 ![Frontend](https://img.shields.io/badge/React-Vite-61DAFB?logo=react)
 ![OpenAI](https://img.shields.io/badge/OpenAI-API-black?logo=openai)
