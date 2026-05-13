@@ -6,9 +6,11 @@ import {
     UserButton
 } from '@clerk/clerk-react'
 
-import { Outlet, Link } from 'react-router-dom'
+import { Outlet, Link, NavLink } from 'react-router-dom'
 
 export function ProtectedLayout() {
+    const linkClass = ({ isActive }) =>
+    isActive ? 'font-semibold text-blue-600' : undefined
     return (
         <>
             <SignedOut>
@@ -18,10 +20,10 @@ export function ProtectedLayout() {
             <SignedIn>
                 <header className="flex justify-between items-center p-4">
                     <nav className="flex gap-4 items-center">
-                        <Link to="/">Home</Link>
-                        <Link to="/history">History</Link>
+                        <NavLink to="/" className={linkClass}>Home</NavLink>
+                        <NavLink to="/generate" className={linkClass}>Generate</NavLink>
+                        <NavLink to="/history" className={linkClass}>History</NavLink>
                     </nav>
-
                     <UserButton />
                 </header>
 
