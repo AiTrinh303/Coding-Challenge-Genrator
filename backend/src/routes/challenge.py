@@ -39,14 +39,12 @@ async def get_quota(request: Request, db: Session = Depends(get_db)):
     user_id = user_details.get("user_id")
 
     quota = get_challenge_quota(db, user_id)
+
     if not quota:
-        return {
-            "user_id": user_id,
-            "quota_remaining": 0,
-            "last_reset_date": datetime.now()
-        }
+        quota = create_challenge_quota(db, user_id)
 
     quota = reset_quota_if_needed(db, quota)
+
     return quota
 
 
@@ -90,5 +88,8 @@ async def generate_challenge(request: ChallengeRequest, request_obj: Request, db
             "timestamp": new_challenge.date_created.isoformat()
         }
 
+    except HTTPException:
+        raise
     except Exception as e:
-        raise HTTPException(status_code=400, detail=str(e))
+        raise HTTPException(status_code=500, detail=str(e))
+
