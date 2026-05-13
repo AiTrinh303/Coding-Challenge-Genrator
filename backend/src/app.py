@@ -8,12 +8,18 @@ app = FastAPI()
 def home():
     return {"message": "Backend is running"}
 
+origins = [
+    "http://localhost:5173",
+    "https://full-stack-app-with-fastapi-react.onrender.com",
+]
+
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],
+    allow_origins=origins,
+    allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
 )
 
-app.include_router(challenge.router, prefix="/api") # /api/generate-challenge
+app.include_router(challenge.router, prefix="/api")
 app.include_router(webhooks.router, prefix="/webhooks")
