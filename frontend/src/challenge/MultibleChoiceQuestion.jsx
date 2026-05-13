@@ -8,10 +8,24 @@ export function MultipleChoiceQuestion({ challenge, showExplanation = false }) {
         return <div>Loading...</div>
     }
 
-    const options =
-        typeof challenge.options === 'string'
-            ? JSON.parse(challenge.options)
-            : challenge.options || []
+    const parseOptions = (options) => {
+        if (!options) return []
+
+        if (Array.isArray(options)) return options
+
+        if (typeof options === 'string') {
+            try {
+                return JSON.parse(options)
+            } catch (err) {
+                console.error('Invalid JSON in challenge.options:', err)
+                return []
+            }
+        }
+
+        return []
+    }
+
+    const options = parseOptions(challenge.options)
 
 
     const handleOptionSelect = (index) => {
