@@ -136,7 +136,7 @@ pip install uv
 
 ```bash
 cd backend
-uv sync
+uv init .
 ```
 
 Environment Variables:
@@ -170,8 +170,18 @@ http://localhost:8000/redoc
 ## 💻 Frontend Setup
 
 ```bash
-cd frontend
+npm create vite@latest frontend -- --template react 
 npm install
+```
+
+Installing Tailwind CSS:
+```bash
+npm install tailwindcss @tailwindcss/vite
+```
+
+Clerk setup:
+```bash
+npm install @clerk/clerk-react
 ```
 
 Environment Variables:
@@ -186,6 +196,7 @@ For production deployment, create or update `frontend/.env.production`:
 ```env
 VITE_API_URL=https://your-backend-domain.com
 ```
+
 ## ▶️ Run Frontend
 
 ```bash
