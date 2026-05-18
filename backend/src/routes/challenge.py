@@ -19,9 +19,10 @@ router = APIRouter()
 
 class ChallengeRequest(BaseModel):
     difficulty: str
+    language: str = "Python"
 
     class Config:
-        json_schema_extra = {"example": {"difficulty": "difficult"}}
+        json_schema_extra = {"example": {"difficulty": "hard", "language": "JavaScript"}}
 
 
 @router.get("/history")
@@ -63,7 +64,7 @@ async def generate_challenge(request: ChallengeRequest, request_obj: Request, db
         if quota.quota_remaining <= 0:
             raise HTTPException(status_code=429, detail="Quota exhausted")
 
-        challenge_data = generate_challenge_with_ai(request.difficulty)
+        challenge_data = generate_challenge_with_ai(request.language, request.difficulty)
 
         new_challenge = create_challenge(
             db=db,
@@ -80,6 +81,7 @@ async def generate_challenge(request: ChallengeRequest, request_obj: Request, db
 
         return {
             "id": new_challenge.id,
+            "language": request.language,
             "difficulty": request.difficulty,
             "title": new_challenge.title,
             "options": json.loads(new_challenge.options),

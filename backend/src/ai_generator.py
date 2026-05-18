@@ -13,16 +13,49 @@ BASE_DIR = Path(__file__).resolve().parent
 PROMPT_PATH = BASE_DIR / "prompts" / "challenge_system_prompt.txt"
 
 system_prompt = PROMPT_PATH.read_text(encoding="utf-8")
+SUPPORTED_LANGUAGES = {"python", "javascript", "java", "c++"}
+DIFFICULTY_MAP = {
+    "easy": "easy",
+    "medium": "medium",
+    "hard": "hard",
+    "difficult": "hard"
+}
 
-def generate_challenge_with_ai(difficulty: str) -> Dict[str, Any]:
+
+def normalize_language(language: str) -> str:
+    if not isinstance(language, str):
+        return "Python"
+
+    normalized = language.strip()
+    if normalized.lower() == "js":
+        return "JavaScript"
+    if normalized.lower() == "csharp":
+        return "Java"
+
+    if normalized.lower() in {"python", "java", "javascript", "c++"}:
+        if normalized.lower() == "javascript":
+            return "JavaScript"
+        if normalized.lower() == "python":
+            return "Python"
+        if normalized.lower() == "java":
+            return "Java"
+        return "C++"
+
+    return "Python"
+
+
+def generate_challenge_with_ai(language: str, difficulty: str) -> Dict[str, Any]:
+    normalized_difficulty = DIFFICULTY_MAP.get(str(difficulty).lower(), "easy")
+    normalized_language = normalize_language(language)
+
     try:
         response = client.chat.completions.create(
-            model="gpt-4.1-nano", 
+            model="gpt-4.1-nano",
             messages=[
                 {"role": "system", "content": system_prompt},
                 {
                     "role": "user",
-                    "content": f"Generate a {difficulty} difficulty coding challenge."
+                    "content": f"Generate a {normalized_difficulty} difficulty coding challenge in {normalized_language}."
                 }
             ],
             response_format={"type": "json_object"},

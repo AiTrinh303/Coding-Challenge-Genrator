@@ -7,6 +7,7 @@ export function Generator() {
     const [isLoading, setIsLoading] = useState(false)
     const [error, setError] = useState(null)
     const [difficulty, setDifficulty] = useState('easy')
+    const [language, setLanguage] = useState('Python')
     const [quota, setQuota] = useState({ quota_remaining: 0})
     const {makeRequest} = useApi()
 
@@ -30,7 +31,7 @@ export function Generator() {
         try {
             const data = await makeRequest("generate-challenge", {
                 method: "POST",
-                body: JSON.stringify({difficulty})
+                body: JSON.stringify({difficulty, language})
                 }
             )
             setChallenge(data)
@@ -57,6 +58,13 @@ export function Generator() {
         setChallenge(null)
         setError(null)
     }
+
+   const handleLanguageChange = (e) => {
+        const newLanguage = e.target.value
+        setLanguage(newLanguage)
+        setChallenge(null)
+        setError(null)
+    }
         
    return (
         <div className="max-w-2xl mx-auto space-y-8">
@@ -66,7 +74,7 @@ export function Generator() {
             Generator Challenge
         </h1>
         <p className="text-gray-500 text-sm">
-            Generate AI-powered PYTHON questions and test your knowledge
+            Generate AI-powered coding questions and test your skills across multiple languages.
         </p>
     </div>
 
@@ -88,10 +96,27 @@ export function Generator() {
         )}
     </div>
 
-    <div className="bg-white border border-gray-200 rounded-2xl p-5 shadow-sm flex items-center gap-4">
+    <div className="bg-white border border-gray-200 rounded-2xl p-5 shadow-sm flex flex-wrap items-center gap-4">
+
+        <label htmlFor="language" className="text-sm font-medium text-gray-700">
+            Language:
+        </label>
+
+        <select
+            id="language"
+            value={language}
+            onChange={handleLanguageChange}
+            disabled={isLoading}
+            className="border border-gray-300 rounded-xl px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 disabled:opacity-50"
+        >
+            <option value="Python">Python</option>
+            <option value="JavaScript">JavaScript</option>
+            <option value="Java">Java</option>
+            <option value="C++">C++</option>
+        </select>
 
         <label htmlFor="difficulty" className="text-sm font-medium text-gray-700">
-            Select Level: 
+            Select Level:
         </label>
 
         <select

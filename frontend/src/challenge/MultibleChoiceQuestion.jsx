@@ -52,9 +52,15 @@ export function MultipleChoiceQuestion({ challenge, showExplanation = false }) {
 
     return (
         <div className="space-y-4">
-            <div className="text-sm text-gray-500">
-                <span className="font-medium">Level:</span>{' '}
-                <span className="capitalize">{challenge.difficulty}</span>
+            <div className="flex flex-wrap gap-4 text-sm text-gray-500">
+                <div>
+                    <span className="font-medium">Language:</span>{' '}
+                    <span>{challenge.language || 'Python'}</span>
+                </div>
+                <div>
+                    <span className="font-medium">Level:</span>{' '}
+                    <span className="capitalize">{challenge.difficulty}</span>
+                </div>
             </div>
 
             <h3 className="text-lg font-semibold leading-relaxed">
