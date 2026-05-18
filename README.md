@@ -6,7 +6,7 @@
 ![Auth](https://img.shields.io/badge/Auth-Clerk-orange)
 ![Deploy](https://img.shields.io/badge/Deploy-Render-46E3B7?logo=render)
 
-> A full-stack AI-powered platform that generates Python multiple-choice coding challenges using OpenAI, with authentication, history tracking, and user quota management.
+> A full-stack AI-powered platform that generates multiple-choice coding challenges across Python, JavaScript, Java, and C++ using OpenAI, with authentication, history tracking, and user quota management.
 
 
 ## Table of Contents
@@ -40,7 +40,8 @@
 ## ✨ Key Features
 
 ### 🧠 AI-Powered Learning
-- Generates Python multiple-choice questions using OpenAI
+- Generates multi-language multiple-choice questions using OpenAI
+- Supported languages: `Python`, `JavaScript`, `Java`, `C++`
 - Difficulty levels: `easy`, `medium`, `hard`
 - Structured JSON responses with validation
 - Fallback system for reliability
@@ -281,7 +282,7 @@ backend/src/prompts/challenge_system_prompt.txt
 ## 📈 Future Improvements
 - 🏆 Leaderboard system
 - 🧪 Code execution sandbox
-- 🌍 Multi-language support
+- 🌍 Expanded language-specific learning paths
 - 🎮 Gamification system
 - 📊 Advanced analytics dashboard
 
