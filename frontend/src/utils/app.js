@@ -1,11 +1,16 @@
 import {useAuth} from "@clerk/clerk-react"
+import { useCallback } from "react"
 
 const API_URL = import.meta.env.VITE_API_URL
+
+if (!API_URL) {
+    throw new Error("Missing API URL. Please set VITE_API_URL in your .env file.")
+}
 
 export const useApi = () => {
     const {getToken} = useAuth()
 
-    const makeRequest = async (endpoint, options = {}) => {
+    const makeRequest = useCallback(async (endpoint, options = {}) => {
         const token = await getToken()
         const defaultOptions = {
             headers: {
@@ -33,7 +38,7 @@ export const useApi = () => {
         }
 
         return response.json()
-    }
+    }, [getToken])
 
     return {makeRequest}
 }

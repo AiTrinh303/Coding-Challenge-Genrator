@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import { useState } from 'react'
 
 export function MultipleChoiceQuestion({ challenge, showExplanation = false }) {
     const [selectedOption, setSelectedOption] = useState(null)
@@ -36,44 +36,42 @@ export function MultipleChoiceQuestion({ challenge, showExplanation = false }) {
 
     const getOptionClass = (index) => {
         if (selectedOption === null) {
-            return 'border hover:bg-gray-50'
+            return 'border-slate-200 bg-white text-slate-700 hover:border-blue-300 hover:bg-blue-50'
         }
 
         if (index === challenge.correct_answer_id) {
-            return 'border-green-500 bg-green-50 text-green-700'
+            return 'border-emerald-400 bg-emerald-50 text-emerald-800'
         }
 
         if (index === selectedOption) {
-            return 'border-red-500 bg-red-50 text-red-700'
+            return 'border-rose-400 bg-rose-50 text-rose-800'
         }
 
-        return 'border opacity-60'
+        return 'border-slate-200 bg-slate-50 text-slate-400'
     }
 
     return (
-        <div className="space-y-4">
-            <div className="flex flex-wrap gap-4 text-sm text-gray-500">
-                <div>
-                    <span className="font-medium">Language:</span>{' '}
-                    <span>{challenge.language || 'Python'}</span>
-                </div>
-                <div>
-                    <span className="font-medium">Level:</span>{' '}
-                    <span className="capitalize">{challenge.difficulty}</span>
-                </div>
+        <article className="space-y-5 text-left">
+            <div className="flex flex-wrap gap-2">
+                <span className="rounded-full bg-blue-50 px-3 py-1 text-xs font-black uppercase text-blue-700">
+                    {challenge.language || 'Python'}
+                </span>
+                <span className="rounded-full bg-amber-50 px-3 py-1 text-xs font-black uppercase text-amber-700">
+                    {challenge.difficulty}
+                </span>
             </div>
 
-            <h3 className="text-lg font-semibold leading-relaxed">
+            <h3 className="text-2xl font-black leading-snug text-slate-950">
                 {challenge.title}
             </h3>
 
-            <div className="space-y-2">
+            <div className="space-y-3">
                 {options.map((option, index) => (
                     <button
                         key={index}
                         onClick={() => handleOptionSelect(index)}
                         disabled={selectedOption !== null}
-                        className={`w-full text-left px-4 py-3 rounded-lg border transition ${getOptionClass(
+                        className={`min-h-14 w-full rounded-xl border px-4 py-3 text-left text-sm font-semibold transition ${getOptionClass(
                             index
                         )} ${
                             selectedOption === null
@@ -81,19 +79,22 @@ export function MultipleChoiceQuestion({ challenge, showExplanation = false }) {
                                 : 'cursor-default'
                         }`}
                     >
-                        {option}
+                        <span className="mr-3 inline-flex h-7 w-7 items-center justify-center rounded-lg bg-slate-100 text-xs font-black text-slate-500">
+                            {String.fromCharCode(65 + index)}
+                        </span>
+                        <span>{option}</span>
                     </button>
                 ))}
             </div>
 
             {(showExplanation || shouldShowExplanation) && selectedOption !== null && (
-                <div className="bg-gray-50 border rounded-lg p-4">
-                    <h4 className="font-semibold mb-1">Explanation</h4>
-                    <p className="text-sm text-gray-700">
+                <div className="rounded-xl border border-slate-200 bg-slate-50 p-5">
+                    <h4 className="mb-2 text-sm font-black uppercase text-slate-500">Explanation</h4>
+                    <p className="text-sm leading-6 text-slate-700">
                         {challenge.explanation}
                     </p>
                 </div>
             )}
-        </div>
+        </article>
     )
 }
