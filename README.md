@@ -8,8 +8,10 @@
 
 > A full-stack AI-powered platform that generates multiple-choice coding challenges across Python, JavaScript, Java, and C++ using OpenAI, with authentication, history tracking, and user quota management.
 
-## Table of Contents
+## 🧭 Table of Contents
+
 - [Live Tech Stack & Resources](#-live-tech-stack--resources)
+- [Course Topics Covered](#-course-topics-covered)
 - [Key Features](#-key-features)
 - [Project Structure](#-project-structure)
 - [Application Flow](#-application-flow)
@@ -18,11 +20,13 @@
 - [Run Backend](#-run-backend)
 - [Frontend Setup](#-frontend-setup)
 - [Run Frontend](#-run-frontend)
-- [Deployment (Render)](#-deployment-render)
 - [Clerk Configuration](#-clerk-configuration)
+- [Clerk Webhook](#-clerk-webhook)
 - [API Endpoints](#-api-endpoints)
 - [OpenAI Integration](#-openai-integration)
 - [Database](#-database)
+- [Deployment Notes](#-deployment-notes)
+- [Troubleshooting](#-troubleshooting)
 - [Future Improvements](#-future-improvements)
 - [Author](#-author)
 
@@ -32,7 +36,7 @@
 - 🔐 Clerk Authentication: https://go.clerk.com/naBxpyl  
 - 🚀 Deployment Platform (Render): https://render.com/  
 
-Backend:
+### 🐍 Backend
 
 - Python 3.12+
 - FastAPI
@@ -43,7 +47,7 @@ Backend:
 - Svix for Clerk webhook verification
 - python-dotenv
 
-Frontend:
+### ⚛️ Frontend
 
 - React
 - Vite
@@ -51,17 +55,17 @@ Frontend:
 - React Router
 - Clerk React
 
-## Course Topics Covered
+## 🎓 Course Topics Covered
 
 This project covers several required course topics:
 
-- **Web Development**: FastAPI backend with API routes.
-- **Database Integration**: SQLAlchemy models with SQLite.
-- **Requests and External Libraries**: OpenAI, Clerk, FastAPI, SQLAlchemy, Svix, dotenv.
-- **File Processing and JSON Handling**: JSON parsing from OpenAI and JSON serialization for challenge options.
-- **Error Handling and Exceptions**: HTTP exceptions, fallback AI response, webhook verification errors.
-- **Virtual Environments and Dependency Management**: `requirements.txt`, `pyproject.toml`, and `uv.lock`.
-- **OOP**: SQLAlchemy database models are Python classes.
+- 🌐 **Web Development**: FastAPI backend with API routes.
+- 🗄️ **Database Integration**: SQLAlchemy models with SQLite.
+- 📦 **Requests and External Libraries**: OpenAI, Clerk, FastAPI, SQLAlchemy, Svix, dotenv.
+- 🧾 **File Processing and JSON Handling**: JSON parsing from OpenAI and JSON serialization for challenge options.
+- 🛡️ **Error Handling and Exceptions**: HTTP exceptions, fallback AI response, webhook verification errors.
+- 🧰 **Virtual Environments and Dependency Management**: `requirements.txt`, `pyproject.toml`, and `uv.lock`.
+- 🧱 **OOP**: SQLAlchemy database models are Python classes.
 
 
 ## ✨ Key Features
@@ -144,15 +148,15 @@ This project covers several required course topics:
 ## ⚙️ Requirements
 Install these before running the project:
 
-- Python 3.12 or newer
-- Node.js and npm
-- A Clerk account and application
-- An OpenAI API key
+- 🐍 Python 3.12 or newer
+- 🟢 Node.js and npm
+- 🔐 A Clerk account and application
+- 🤖 An OpenAI API key
 
 Optional:
 
-- `uv` Python package manager
-- ngrok or another tunnel tool for local Clerk webhook testing
+- ⚡ `uv` Python package manager
+- 🌍 ngrok or another tunnel tool for local Clerk webhook testing
 
 Install `uv` if you want to use it:
 
@@ -221,7 +225,7 @@ python server.py
 Or with `uv`:
 
 ```bash
-uv run ./server.py
+uv run python server.py
 ```
 
 The backend runs at:
@@ -323,7 +327,7 @@ backend/src/app.py
 
 If your frontend runs on a new domain or port, update both places.
 
-## 🔐 Clerk Webhook
+## 🪝 Clerk Webhook
 
 The backend webhook endpoint is:
 
@@ -351,7 +355,7 @@ https://your-tunnel-url/webhooks/clerk
 
 All challenge endpoints use the `/api` prefix and require a Clerk bearer token.
 
-### Get Quota
+### 📊 Get Quota
 
 ```text
 GET /api/quota
@@ -375,7 +379,7 @@ Example response:
 }
 ```
 
-### Generate Challenge
+### 🧠 Generate Challenge
 
 ```text
 POST /api/generate-challenge
@@ -421,7 +425,7 @@ If the user has no quota left:
 }
 ```
 
-### Get History
+### 📚 Get History
 
 ```text
 GET /api/history
@@ -486,7 +490,7 @@ The AI response must contain:
 
 If OpenAI fails or returns invalid data, the backend returns a fallback Python list question so the app can still respond.
 
-## Database
+## 🗄️ Database
 
 The backend uses SQLite with SQLAlchemy.
 
@@ -507,7 +511,7 @@ Tables:
 - `challenges`
 - `challenge_quotas`
 
-### challenges
+### 🧩 challenges
 
 Stores generated challenges.
 
@@ -522,7 +526,7 @@ Important fields:
 - `correct_answer_id`
 - `explanation`
 
-### challenge_quotas
+### ⏳ challenge_quotas
 
 Stores user quota data.
 
@@ -537,12 +541,12 @@ Default quota is `50`.
 
 When more than 24 hours have passed, quota resets to `10` in the current code.
 
-## Deployment Notes
+## 🚀 Deployment Notes
 
 Backend deployment:
 
 - Set backend environment variables in your hosting platform.
-- Use `uv run server.py`.
+- Use `uv run python server.py`.
 - Make sure the deployed backend URL is added to Clerk webhook settings if webhooks are used.
 
 Frontend deployment:
@@ -558,9 +562,9 @@ After deployment:
 - Add production frontend URL to backend CORS origins.
 - Add production frontend URL to Clerk authorized parties in `backend/src/utils.py`.
 
-## Troubleshooting
+## 🧯 Troubleshooting
 
-### Frontend says Clerk key is missing
+### 🔐 Frontend says Clerk key is missing
 
 Check:
 
@@ -570,7 +574,7 @@ VITE_CLERK_PUBLISHABLE_KEY=your_clerk_publishable_key
 
 Restart the frontend dev server after editing env files.
 
-### Frontend cannot call backend
+### 🌐 Frontend cannot call backend
 
 Check:
 
@@ -584,7 +588,7 @@ Also confirm the backend is running:
 http://localhost:8000/docs
 ```
 
-### CORS error
+### 🚧 CORS error
 
 Update the allowed origins in:
 
@@ -592,7 +596,7 @@ Update the allowed origins in:
 backend/src/app.py
 ```
 
-### Authentication error
+### 🛡️ Authentication error
 
 Check:
 
@@ -600,7 +604,7 @@ Check:
 - Authorized parties in `backend/src/utils.py`
 - The actual frontend URL shown in the browser
 
-### Webhook error
+### 🪝 Webhook error
 
 Check:
 
@@ -608,7 +612,7 @@ Check:
 CLERK_WEBHOOK_SECRET=your_clerk_webhook_signing_secret
 ```
 
-### OpenAI error
+### 🤖 OpenAI error
 
 Check:
 
