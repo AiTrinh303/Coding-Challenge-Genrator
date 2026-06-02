@@ -2,7 +2,7 @@ from fastapi import APIRouter, Depends, HTTPException, Request
 from pydantic import BaseModel
 from sqlalchemy.orm import Session
 
-from ..ai_generator import generate_challenge_with_ai
+from ..ai_generator import generate_challenge_with_ai, normalize_language
 from ..database.db import (
     get_challenge_quota,
     create_challenge,
@@ -31,7 +31,20 @@ async def my_history(request: Request, db: Session = Depends(get_db)):
     user_id = user_details.get("user_id")
 
     challenges = get_user_challenges(db, user_id)
-    return {"challenges": challenges}
+    history_items = [
+        {
+            "id": c.id,
+            "language": c.language or "Python",
+            "difficulty": c.difficulty,
+            "title": c.title,
+            "options": json.loads(c.options) if isinstance(c.options, str) else c.options,
+            "correct_answer_id": c.correct_answer_id,
+            "explanation": c.explanation,
+            "timestamp": c.date_created.isoformat() if c.date_created else None,
+        }
+        for c in challenges
+    ]
+    return {"challenges": history_items}
 
 
 @router.get("/quota")
@@ -64,11 +77,13 @@ async def generate_challenge(request: ChallengeRequest, request_obj: Request, db
         if quota.quota_remaining <= 0:
             raise HTTPException(status_code=429, detail="Quota exhausted")
 
-        challenge_data = generate_challenge_with_ai(request.language, request.difficulty)
+        selected_language = normalize_language(request.language)
+        challenge_data = generate_challenge_with_ai(selected_language, request.difficulty)
 
         new_challenge = create_challenge(
             db=db,
             difficulty=request.difficulty,
+            language=selected_language,
             created_by=user_id,
             title=challenge_data["title"],
             options=json.dumps(challenge_data["options"]),

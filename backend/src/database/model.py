@@ -1,4 +1,4 @@
-from sqlalchemy import Column, Integer, String, DateTime, create_engine
+from sqlalchemy import Column, Integer, String, DateTime, create_engine, text
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker
 from datetime import datetime
@@ -16,6 +16,7 @@ class Challenge(Base):
 
     id = Column(Integer, primary_key=True)
     difficulty = Column(String, nullable=False)
+    language = Column(String, nullable=False, default="Python")
     date_created = Column(DateTime, default=datetime.now)
     created_by = Column(String, nullable=False)
     title = Column(String, nullable=False)
@@ -34,6 +35,12 @@ class ChallengeQuota(Base):
 
 
 Base.metadata.create_all(engine)
+
+with engine.begin() as conn:
+    result = conn.execute(text("PRAGMA table_info(challenges)"))
+    existing_columns = [row[1] for row in result.fetchall()]
+    if "language" not in existing_columns:
+        conn.execute(text("ALTER TABLE challenges ADD COLUMN language VARCHAR DEFAULT 'Python'"))
 
 SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
 

@@ -32,14 +32,17 @@ def reset_quota_if_needed(db: Session, quota: model.ChallengeQuota):
 def create_challenge(
     db: Session,
     difficulty: str,
+    language: str,
     created_by: str,
     title: str,
     options: str,
     correct_answer_id: int,
     explanation: str
 ):
+    language_value = language if isinstance(language, str) and language.strip() else "Python"
     db_challenge = model.Challenge(
         difficulty=difficulty,
+        language=language_value,
         created_by=created_by,
         title=title,
         options=options,
